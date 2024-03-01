@@ -1,5 +1,6 @@
 import sys
 from pynput.keyboard import Key, Listener
+from get_url import get_url
 
 from selected_song import refresh_screen, selected_song
 import config
@@ -62,7 +63,10 @@ def player_user_input(stdscr, key):
 
     if config.player_screen and config.focus_thread:
         if hasattr(key, 'char'):
-            config.player_screen_user_input += key.char
+            try:
+                config.player_screen_user_input += key.char
+            except:
+                pass
             stdscr.clrtoeol()
             stdscr.addstr(height - 1, 0, config.player_screen_user_input)
             stdscr.refresh()
@@ -78,7 +82,37 @@ def player_user_input(stdscr, key):
             stdscr.clrtoeol()
             stdscr.addstr(height - 1, 0, config.player_screen_user_input)
             stdscr.refresh()
+        elif key == Key.enter and config.player_screen_user_input > '':
+            player_command(config.player_screen_user_input, stdscr)
 
 def player_user_input_listener(stdscr):
     with Listener(on_press=lambda key: player_user_input(stdscr, key)) as listener:
         listener.join()
+
+def player_command(string, stdscr):
+    if ':' not in string: return
+
+    height, _ = stdscr.getmaxyx()
+
+    command, query = string.split(':', 1)
+    queries = query.split(', ')
+    
+    if command == 'add':
+        if len(queries) == 0: return
+        get_url(queries, stdscr, False)
+    elif command == 'del':
+        if len(config.info_list) == 1 or int(query) - 1 == config.row: return
+        for query in queries:
+            try:
+                config.info_list.pop(int(query) - 1)
+            except:
+                pass
+        refresh_screen(stdscr)
+    else:
+        config.player_screen_user_input
+
+    config.player_screen_user_input = ''
+    stdscr.move(height - 1, 0)
+    stdscr.clrtoeol()
+    stdscr.addstr(height - 1, 0, config.player_screen_user_input)
+    stdscr.refresh()
