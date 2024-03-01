@@ -7,9 +7,10 @@ def play_songs(stdscr):
     config.loop = True
     config.player_screen = True
     curses.flushinp()
+    config.player_screen_user_input = ''
 
     height, _ = stdscr.getmaxyx()
-    stdscr.addstr(height - 2, 0, 'add: queries  /  del: songs number  / each query separate by ,')
+    stdscr.addstr(height - 2, 0, 'add: queries / del: number / separate by , / save: or remove: list', curses.color_pair(1))
  
     while config.row < len(config.info_list) and config.loop:
         _ , url = config.info_list[config.row]

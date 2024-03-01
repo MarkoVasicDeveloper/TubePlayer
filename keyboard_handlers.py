@@ -1,3 +1,5 @@
+import curses
+import os
 import sys
 from pynput.keyboard import Key, Listener
 from get_url import get_url
@@ -27,6 +29,7 @@ def on_press(stdscr, key):
             config.info_list = []
             config.row = 0
             config.selected_row = 0
+            config.player_screen_user_input == ''
         elif key == Key.up:
             if config.selected_row >= 1: 
                 config.selected_row -= 1
@@ -101,6 +104,7 @@ def player_command(string, stdscr):
     if command == 'add':
         if len(queries) == 0: return
         get_url(queries, stdscr, False)
+        config.player_screen_user_input = ''
     elif command == 'del':
         if len(config.info_list) == 1: return
         for index , song in enumerate(queries):
@@ -113,10 +117,24 @@ def player_command(string, stdscr):
                 pass
         refresh_screen(stdscr)
     elif command == 'save':
-        with open(f'playlists/{query}.json', 'w') as file:
+        fileName = query.replace(" ", "")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        playlist_path = os.path.join(base_dir, 'playlists', f'{fileName}.json')
+        if len(query) == 0: return
+        with open(playlist_path, 'w') as file:
             json.dump(config.info_list, file)
+        config.player_screen_user_input = ''
 
-    config.player_screen_user_input = ''
+    elif command == 'remove':
+        fileName = query.replace(" ", "")
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        playlist_path = os.path.join(base_dir, 'playlists', f'{fileName}.json')
+        if os.path.exists(playlist_path):
+            os.remove(playlist_path)
+        config.player_screen_user_input = ''
+    else:
+        config.player_screen_user_input = ''
+
     stdscr.move(height - 1, 0)
     stdscr.clrtoeol()
     stdscr.addstr(height - 1, 0, config.player_screen_user_input)

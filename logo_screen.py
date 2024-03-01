@@ -59,7 +59,10 @@ def logo_screen (stdscr):
 
 
         stdscr.clrtoeol()
-        stdscr.addstr(height - 1, 0, user_input[counter * width : width * (counter + 1)])
+        try:
+            stdscr.addstr(height - 1, 0, user_input[counter * width : width * (counter + 1)])
+        except:
+            pass
         stdscr.refresh()
 
     if user_input:

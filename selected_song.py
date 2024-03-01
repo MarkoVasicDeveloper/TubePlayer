@@ -12,7 +12,7 @@ def selected_song(stdscr):
             stdscr.addstr(f'{i + 1}. {title}')
         stdscr.addstr('\n')
 
-    stdscr.addstr(height - 2, 0, 'add: queries  /  del: songs number  / each query separate by ,')
+    stdscr.addstr(height - 2, 0, 'add: queries / del: number / separate by , / save: or remove: list', curses.color_pair(1))
     stdscr.move(height - 1, 0)
     stdscr.clrtoeol()
     stdscr.addstr(height - 1, 0, config.player_screen_user_input)
@@ -25,7 +25,7 @@ def refresh_screen(stdscr):
         stdscr.addstr(f'{i + 1}. {title}')
         stdscr.addstr('\n')
 
-    stdscr.addstr(height - 2, 0, 'add: queries  /  del: songs number  / each query separate by ,')
+    stdscr.addstr(height - 2, 0, 'add: queries / del: number / separate by , / save: or remove: list', curses.color_pair(1))
     stdscr.move(height - 1, 0)
     stdscr.clrtoeol()
     stdscr.addstr(height - 1, 0, config.player_screen_user_input)
