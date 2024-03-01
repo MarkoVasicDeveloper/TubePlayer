@@ -1,6 +1,7 @@
 import sys
 from pynput.keyboard import Key, Listener
 from get_url import get_url
+import json
 
 from selected_song import refresh_screen, selected_song
 import config
@@ -111,8 +112,9 @@ def player_command(string, stdscr):
             except:
                 pass
         refresh_screen(stdscr)
-    else:
-        config.player_screen_user_input = ''
+    elif command == 'save':
+        with open(f'playlists/{query}.json', 'w') as file:
+            json.dump(config.info_list, file)
 
     config.player_screen_user_input = ''
     stdscr.move(height - 1, 0)
