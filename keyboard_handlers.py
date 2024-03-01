@@ -95,21 +95,24 @@ def player_command(string, stdscr):
     height, _ = stdscr.getmaxyx()
 
     command, query = string.split(':', 1)
-    queries = query.split(', ')
+    queries = query.split(',')
     
     if command == 'add':
         if len(queries) == 0: return
         get_url(queries, stdscr, False)
     elif command == 'del':
-        if len(config.info_list) == 1 or int(query) - 1 == config.row: return
-        for query in queries:
+        if len(config.info_list) == 1: return
+        for index , song in enumerate(queries):
             try:
-                config.info_list.pop(int(query) - 1)
+                if int(song) != config.row:
+                    config.info_list.pop(int(song) - 1 - index)
+                    if config.row != 1:
+                        config.row -= 1
             except:
                 pass
         refresh_screen(stdscr)
     else:
-        config.player_screen_user_input
+        config.player_screen_user_input = ''
 
     config.player_screen_user_input = ''
     stdscr.move(height - 1, 0)
