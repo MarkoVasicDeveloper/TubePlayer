@@ -1,4 +1,6 @@
 import curses
+import json
+import os
 
 import config
 import sys
@@ -68,7 +70,6 @@ def logo_screen (stdscr):
     if user_input:
         stdscr.clear()
         stdscr.refresh()
-        queries = user_input.split(', ')
 
         if config.listener_thread is None:
             listener_thread = threading.Thread(target=start_listener, args=(stdscr,), daemon=True)
@@ -79,6 +80,20 @@ def logo_screen (stdscr):
             player_user_input_thread = threading.Thread(target=player_user_input_listener, args=(stdscr,), daemon=True)
             player_user_input_thread.start()
             config.player_user_input_thread = True
+
+        if ':' in user_input:
+            user_input = user_input.replace(" ", "")
+            command, list = user_input.split(':', 1)
+            if command == 'playlist':
+                base_dir = os.path.dirname(os.path.abspath(__file__))
+                playlist_path = os.path.join(base_dir, 'playlists', f'{list}.json')
+                if os.path.exists(playlist_path):
+                    with open(playlist_path, 'r') as file:
+                        title = json.load(file)
+                    if get_url(title, stdscr):
+                        return play_songs(stdscr)
+
+        queries = user_input.split(', ')
 
         if get_url(queries, stdscr):
             user_input = ''

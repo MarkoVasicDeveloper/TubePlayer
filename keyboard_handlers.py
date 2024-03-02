@@ -121,8 +121,9 @@ def player_command(string, stdscr):
         base_dir = os.path.dirname(os.path.abspath(__file__))
         playlist_path = os.path.join(base_dir, 'playlists', f'{fileName}.json')
         if len(query) == 0: return
+        title = [item[0] for item in config.info_list]
         with open(playlist_path, 'w') as file:
-            json.dump(config.info_list, file)
+            json.dump(title, file)
         config.player_screen_user_input = ''
 
     elif command == 'remove':
