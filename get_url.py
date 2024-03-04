@@ -2,6 +2,7 @@ import subprocess
 import config
 
 def get_url(queries, stdscr, loading=True):
+    stdscr.clear()
 
     if loading:
         stdscr.addstr(0, 0, 'Loading...')
