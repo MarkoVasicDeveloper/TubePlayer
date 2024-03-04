@@ -17,9 +17,15 @@ def on_press(stdscr, key):
 
     if config.player_screen and config.focus_thread:
         if key == Key.left:
-            config.player.seek(-5)
+            try:
+                config.player.seek(-5)
+            except:
+                pass
         elif key == Key.right:
-            config.player.seek(5)
+            try:
+                config.player.seek(5)
+            except:
+                pass
         elif key == Key.esc:
             duration = config.player.duration
             if duration is not None:
@@ -115,6 +121,7 @@ def player_command(string, stdscr):
                         config.row -= 1
             except:
                 pass
+        config.player_screen_user_input = ''
         refresh_screen(stdscr)
     elif command == 'save':
         fileName = query.replace(" ", "")
