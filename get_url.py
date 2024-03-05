@@ -2,9 +2,9 @@ import subprocess
 import config
 
 def get_url(queries, stdscr, loading=True):
-    stdscr.clear()
 
     if loading:
+        stdscr.clear()
         stdscr.addstr(0, 0, 'Loading...')
         stdscr.refresh()
 
@@ -18,6 +18,8 @@ def get_url(queries, stdscr, loading=True):
             pass
         if loading: stdscr.addstr(0, 0, f'Loading...    {index + 1}/{len(queries)}')
         stdscr.refresh()
+
+    stdscr.clear()
 
     for index, info in enumerate(config.info_list):
         try:

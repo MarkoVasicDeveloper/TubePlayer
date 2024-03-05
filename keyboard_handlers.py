@@ -6,6 +6,8 @@ from get_url import get_url
 import json
 
 from selected_song import refresh_screen, selected_song
+from command import command
+from footer import footer
 import config
 
 if sys.platform == 'linux':
@@ -69,7 +71,6 @@ def focus_listener():
         listener.join()
 
 def player_user_input(stdscr, key):
-    height, _ = stdscr.getmaxyx()
 
     if config.player_screen and config.focus_thread:
         if hasattr(key, 'char'):
@@ -77,73 +78,19 @@ def player_user_input(stdscr, key):
                 config.player_screen_user_input += key.char
             except:
                 pass
-            stdscr.clrtoeol()
-            stdscr.addstr(height - 1, 0, config.player_screen_user_input)
-            stdscr.refresh()
+            
         elif key == Key.space:
             config.player_screen_user_input += ' '
-            stdscr.clrtoeol()
-            stdscr.addstr(height - 1, 0, config.player_screen_user_input)
-            stdscr.refresh()
+            
         elif key == Key.backspace:
             if(len(config.player_screen_user_input) > 0):
                 config.player_screen_user_input = config.player_screen_user_input[:-1]
-            stdscr.move(height - 1, 0)
-            stdscr.clrtoeol()
-            stdscr.addstr(height - 1, 0, config.player_screen_user_input)
-            stdscr.refresh()
+
         elif key == Key.enter and config.player_screen_user_input > '':
-            player_command(config.player_screen_user_input, stdscr)
+            command.player(config.player_screen_user_input, stdscr)
+
+        footer.input_line(stdscr, 0, config.player_screen_user_input)
 
 def player_user_input_listener(stdscr):
     with Listener(on_press=lambda key: player_user_input(stdscr, key)) as listener:
         listener.join()
-
-def player_command(string, stdscr):
-    if ':' not in string: return
-
-    height, _ = stdscr.getmaxyx()
-
-    command, query = string.split(':', 1)
-    queries = query.split(',')
-    
-    if command == 'add':
-        if len(queries) == 0: return
-        get_url(queries, stdscr, False)
-        config.player_screen_user_input = ''
-    elif command == 'del':
-        if len(config.info_list) == 1: return
-        for index , song in enumerate(queries):
-            try:
-                if int(song) != config.row:
-                    config.info_list.pop(int(song) - 1 - index)
-                    if config.row != 1:
-                        config.row -= 1
-            except:
-                pass
-        config.player_screen_user_input = ''
-        refresh_screen(stdscr)
-    elif command == 'save':
-        fileName = query.replace(" ", "")
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        playlist_path = os.path.join(base_dir, 'playlists', f'{fileName}.json')
-        if len(query) == 0: return
-        title = [item[0] for item in config.info_list]
-        with open(playlist_path, 'w') as file:
-            json.dump(title, file)
-        config.player_screen_user_input = ''
-
-    elif command == 'remove':
-        fileName = query.replace(" ", "")
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        playlist_path = os.path.join(base_dir, 'playlists', f'{fileName}.json')
-        if os.path.exists(playlist_path):
-            os.remove(playlist_path)
-        config.player_screen_user_input = ''
-    else:
-        config.player_screen_user_input = ''
-
-    stdscr.move(height - 1, 0)
-    stdscr.clrtoeol()
-    stdscr.addstr(height - 1, 0, config.player_screen_user_input)
-    stdscr.refresh()

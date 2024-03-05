@@ -1,3 +1,4 @@
+import os
 import mpv
 
 from play_songs import update_progress
@@ -10,6 +11,8 @@ terminal_id = None
 main_description = "Queries separate by , / playlist:  list name / list: show all playlist / q for quit"
 list_description = "Enter list number  / remove: list number / ESC to return "
 play_description = 'add: queries / del: number / separate by , / save: or remove: list'
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
 
 user_input = ''
 player_screen_user_input = ''

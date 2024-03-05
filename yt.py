@@ -21,7 +21,7 @@ def main(stdscr):
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
 
-    input = UserInput(stdscr)
+    get_input = UserInput(stdscr)
 
     if not os.path.exists('playlists'):
         os.makedirs('playlists')
@@ -35,12 +35,12 @@ def main(stdscr):
         queries = args.query.split(', ')
         
         if get_url(queries, stdscr):
-            play_songs(stdscr, input)
+            play_songs(stdscr, get_input)
         else:
             stdscr.addstr(0, 0, "No URLs found for the given query.")
             stdscr.refresh()
     else:
-        logo_screen(stdscr, input)
+        logo_screen(stdscr, get_input)
 
 def handle_interrupt(signal, frame):
     sys.exit(0)

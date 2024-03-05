@@ -3,7 +3,7 @@ from format_time import format_time
 import config
 from footer import footer
 
-def play_songs(stdscr, input):
+def play_songs(stdscr, get_input):
     from logo_screen import logo_screen
     config.loop = True
     config.player_screen = True
@@ -22,7 +22,7 @@ def play_songs(stdscr, input):
 
         if config.row == len(config.info_list): config.row = 0
 
-    logo_screen(stdscr, input)
+    logo_screen(stdscr, get_input)
 
 def update_progress(stdscr, name, value):
     duration = config.player._get_property('duration')
