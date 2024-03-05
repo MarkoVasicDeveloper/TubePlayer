@@ -10,12 +10,18 @@ from logo_screen import logo_screen
 from play_songs import play_songs
 import config
 
+from user_input import UserInput
+
 def main(stdscr):
     config.stdscr = stdscr
-    
+    height, width = stdscr.getmaxyx()
+    config.height = height
+    config.width = width
     curses.start_color()
     curses.init_pair(1, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+
+    input = UserInput(stdscr)
 
     if not os.path.exists('playlists'):
         os.makedirs('playlists')
@@ -29,12 +35,12 @@ def main(stdscr):
         queries = args.query.split(', ')
         
         if get_url(queries, stdscr):
-            play_songs(stdscr)
+            play_songs(stdscr, input)
         else:
             stdscr.addstr(0, 0, "No URLs found for the given query.")
             stdscr.refresh()
     else:
-        logo_screen(stdscr)
+        logo_screen(stdscr, input)
 
 def handle_interrupt(signal, frame):
     sys.exit(0)

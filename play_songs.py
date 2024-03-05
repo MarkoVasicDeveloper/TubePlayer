@@ -1,17 +1,17 @@
 import curses
 from format_time import format_time
 import config
+from footer import footer
 
-def play_songs(stdscr):
+def play_songs(stdscr, input):
     from logo_screen import logo_screen
     config.loop = True
     config.player_screen = True
     curses.flushinp()
     config.player_screen_user_input = ''
 
-    height, _ = stdscr.getmaxyx()
-    stdscr.addstr(height - 2, 0, 'add: queries / del: number / separate by , / save: or remove: list', curses.color_pair(1))
- 
+    footer.init(stdscr, config.play_description)
+
     while config.row < len(config.info_list) and config.loop:
         _ , url = config.info_list[config.row]
         config.player.play(url)
@@ -22,7 +22,7 @@ def play_songs(stdscr):
 
         if config.row == len(config.info_list): config.row = 0
 
-    logo_screen(stdscr)
+    logo_screen(stdscr, input)
 
 def update_progress(stdscr, name, value):
     duration = config.player._get_property('duration')

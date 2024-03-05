@@ -7,7 +7,15 @@ stdscr = None
 info_list = []
 terminal_id = None
 
+main_description = "Queries separate by , / playlist:  list name / list: show all playlist / q for quit"
+list_description = "Enter list number  / remove: list number / ESC to return "
+play_description = 'add: queries / del: number / separate by , / save: or remove: list'
+
+user_input = ''
 player_screen_user_input = ''
+
+height = None
+width = None
 
 row = 0
 selected_row = 0
