@@ -3,7 +3,8 @@ from pynput.keyboard import Key, Listener
 from selected_song import refresh_screen, selected_song
 
 class PlayerControl:
-    def __init__(self, stdscr, config) -> None:
+    def __init__(self, stdscr, config, player_input) -> None:
+        self.player_input = player_input
         self.stdscr = stdscr
         self.config = config
         self.listener = Listener(on_press=self.on_press)
@@ -16,7 +17,7 @@ class PlayerControl:
             elif key == Key.esc: self.stop_player()
             elif key == Key.up: self.move_selected_song(-1)
             elif key == Key.down: self.move_selected_song(1)
-            elif key == Key.enter and self.config.player_screen_user_input == '': self.handle_enter()
+            elif key == Key.enter and self.player_input.player_input == '': self.handle_enter()
 
     def start(self):
         self.listener.join()

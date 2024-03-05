@@ -14,17 +14,13 @@ play_description = 'add: queries / del: number / separate by , / save: or remove
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 
-user_input = ''
-player_screen_user_input = ''
-
 height = None
 width = None
 
 row = 0
 selected_row = 0
-listener_thread = None
+input_thread = None
 focus_thread = None
-player_user_input_thread = None
 player_screen = False
 loop = True
 

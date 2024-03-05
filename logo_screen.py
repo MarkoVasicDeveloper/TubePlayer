@@ -4,13 +4,14 @@ import config
 import threading
 
 from get_url import get_url
-from keyboard_handlers import focus_listener, player_user_input_listener, start_listener
+from keyboard_handlers import focus_listener
 from logo_asci import logoASCI
 from play_songs import play_songs
 
 from footer import footer
 from command import command
-from player_control import PlayerControl
+from thread.player_control import PlayerControl
+from thread.player_input import PlayerInput
 
 def logo_screen (stdscr, get_input):
     curses.flushinp()
@@ -30,18 +31,17 @@ def logo_screen (stdscr, get_input):
         stdscr.clear()
         stdscr.refresh()
 
-        if config.listener_thread is None:
-            listener_thread = threading.Thread(target=start_listener, args=(stdscr,), daemon=True)
-            listener_thread.start()
-            config.listener_thread = True
+        if config.input_thread is None:
+            player_input = PlayerInput(stdscr)
+            player_input_thread = threading.Thread(target=player_input.start, daemon=True)
+            player_input_thread.start()
 
-        if config.player_user_input_thread is None:
-            player = PlayerControl(stdscr, config)
-            player_user_input_thread = threading.Thread(target=player.start,)
-            player_user_input_thread.start()
-            config.player_user_input_thread = True
+            player = PlayerControl(stdscr, config, player_input)
+            control_input_thread = threading.Thread(target=player.start, daemon=True)
+            control_input_thread.start()
+            config.input_thread = True
 
-        if ':' in user_input:return command.main(stdscr, user_input, get_input)
+        if ':' in user_input: return command.main(stdscr, user_input, get_input)
 
         queries = user_input.split(', ')
 
