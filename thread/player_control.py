@@ -37,12 +37,12 @@ class PlayerControl:
         self.config.info_list = []
         self.config.row = 0
         self.config.selected_row = 0
-        self.config.player_screen_user_input = ''
+        self.player_input.player_input = ''
 
     def move_selected_song(self, direction):
         if 0 <= self.config.selected_row + direction < len(self.config.info_list):
             self.config.selected_row += direction
-            selected_song(self.stdscr)
+            selected_song(self.stdscr, self.player_input)
 
     def handle_enter(self):
         duration = self.config.player.duration
