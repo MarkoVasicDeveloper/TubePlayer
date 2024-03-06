@@ -24,7 +24,7 @@ class PlayerInput:
                 if(len(self.player_input) > 0): self.player_input = self.player_input[:-1]
 
             elif key == Key.enter and self.player_input > '':
-                if ':' in self.player_input : command.player(self.player_input, self.stdscr)
+                if ':' in self.player_input : command.player(self.player_input, self.stdscr, self )
                 self.player_input = ''
 
             footer.input_line(self.stdscr, 0, self.player_input)

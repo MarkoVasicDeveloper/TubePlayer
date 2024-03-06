@@ -38,8 +38,7 @@ class UserInput:
         while True:
             ch = self.stdscr.getch()
             if ch == 27: return -1
-
-            elif chr(ch).isdigit():
+            elif chr(ch).isalnum() or chr(ch) == ':':
                 self.user_input += chr(ch)
             elif ch == curses.KEY_ENTER or ch == 10:
                 if self.user_input == '': pass

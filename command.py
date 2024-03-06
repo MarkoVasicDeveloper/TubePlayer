@@ -29,10 +29,12 @@ class Command:
                     title = json.load(file)
                 if get_url(title, stdscr):
                     return play_songs(stdscr, get_input)
+            else:
+                return show_playlist(stdscr, get_input)
         elif command == 'list':
             return show_playlist(stdscr, get_input)
         
-    def player(self, string, stdscr):
+    def player(self, string, stdscr, player_input  ):
         string = string.replace(" ", "")
         command, query = string.split(':', 1)
         queries = query.split(',')
@@ -40,7 +42,7 @@ class Command:
         if command == 'add':
             if len(queries) == 0: return
             get_url(queries, stdscr, False)
-            config.player_screen_user_input = ''
+            player_input.player_input = ''
             
         elif command == 'del':
             if len(config.info_list) == 1: return
@@ -52,8 +54,8 @@ class Command:
                             config.row -= 1
                 except:
                     pass
-            config.player_screen_user_input = ''
             refresh_screen(stdscr)
+            player_input.player_input = ''
 
         elif command == 'save':
             playlist_path = os.path.join(config.base_dir, 'playlists', f'{queries[0]}.json')
@@ -61,17 +63,35 @@ class Command:
             title = [item[0] for item in config.info_list]
             with open(playlist_path, 'w') as file:
                 json.dump(title, file)
-            config.player_screen_user_input = ''
+            player_input.player_input = ''
 
         elif command == 'remove':
             playlist_path = os.path.join(config.base_dir, 'playlists', f'{queries[0]}.json')
             if os.path.exists(playlist_path):
                 os.remove(playlist_path)
-            config.player_screen_user_input = ''
+            player_input.player_input = ''
 
         else:
-            config.player_screen_user_input = ''
+            player_input.player_input = ''
 
         footer.init(stdscr, config.play_description)
 
+    def list(self, string, stdscr, get_input):
+        string = string.replace(" ", "")
+        command, query = string.split(':', 1)
+
+        if command == 'remove':
+            playlist_dir = os.path.join(config.base_dir, 'playlists')
+            playlist_files = os.listdir(playlist_dir)
+            try:
+                file_name = playlist_files[int(query) - 1]
+                playlist_path = os.path.join(playlist_dir, file_name)
+                if os.path.exists(playlist_path):
+                    os.remove(playlist_path)
+                return show_playlist(stdscr, get_input)
+            except:
+                pass
+        else:
+            return show_playlist(stdscr, get_input)
+        
 command = Command()

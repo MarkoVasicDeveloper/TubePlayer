@@ -8,6 +8,7 @@ from get_url import get_url
 from play_songs import play_songs
 
 def show_playlist(stdscr, get_input):
+    from command import command
     from logo_screen import logo_screen
     playlist_dir = os.path.join(config.base_dir, 'playlists')
 
@@ -30,6 +31,8 @@ def show_playlist(stdscr, get_input):
     user_input = get_input.list_input()
  
     if user_input == -1: return logo_screen(stdscr, get_input)
+    if ':' in user_input: return command.list(user_input, stdscr, get_input)
+
     index = int(user_input) - 1
     if index < len(playlist_files):
         file_name = playlist_files[index]
@@ -38,4 +41,4 @@ def show_playlist(stdscr, get_input):
             with open(playlist_path, 'r') as file:
                 title = json.load(file)
             if get_url(title, stdscr):
-                return play_songs(stdscr)
+                return play_songs(stdscr, get_input)
