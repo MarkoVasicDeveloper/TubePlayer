@@ -54,7 +54,7 @@ class Command:
                             config.row -= 1
                 except:
                     pass
-            refresh_screen(stdscr)
+            refresh_screen(stdscr, player_input)
             player_input.player_input = ''
 
         elif command == 'save':
