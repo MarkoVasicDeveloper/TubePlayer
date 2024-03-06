@@ -70,3 +70,15 @@ On this screen, you will see all of your lists.
     >Press ESC to return to the main screen
 
 > **Notice:**   All commands have to end with colon
+
+### Contribution Encouragement:
+
+We welcome contributions! If you would like to contribute to the development of TubePlayer, feel free to submit a pull request or open an issue.
+
+### License:
+
+TubePlayer is available under the MIT license. This means you are free to use, modify, and distribute this software, provided you retain the original license text.
+
+### Support:
+
+If you have any questions, issues, or suggestions, feel free to contact us by opening an issue or sending an email to markovasicdeveloper@gmail.com. Our team will be happy to assist you!
