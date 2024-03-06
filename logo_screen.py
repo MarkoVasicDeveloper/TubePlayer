@@ -5,7 +5,6 @@ import config
 from get_url import get_url
 from logo_asci import logoASCI
 from play_songs import play_songs
-
 from footer import footer
 from command import command
 from thread.set_thread import set_thread

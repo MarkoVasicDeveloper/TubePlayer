@@ -49,4 +49,4 @@ class PlayerControl:
         if duration is not None:
             self.config.row = self.config.selected_row
             self.config.player.seek(duration)
-            refresh_screen(self.stdscr, self.player_input)
+            refresh_screen(self.stdscr, self.player_input, self.config.play_description)

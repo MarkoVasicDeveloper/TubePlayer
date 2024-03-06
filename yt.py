@@ -1,20 +1,17 @@
-import argparse
 import curses
 import os
 import signal
 import subprocess
 import sys
 
-from get_url import get_url
 from logo_screen import logo_screen
-from play_songs import play_songs
 import config
 
 from user_input import UserInput
 
 def main(stdscr):
-    config.stdscr = stdscr
     height, width = stdscr.getmaxyx()
+    config.stdscr = stdscr
     config.height = height
     config.width = width
     curses.start_color()
@@ -26,23 +23,9 @@ def main(stdscr):
     if not os.path.exists('playlists'):
         os.makedirs('playlists')
 
-    parser = argparse.ArgumentParser(description='Download or play YouTube video.')
-    parser.add_argument('-q', '--query', type=str, help='Search query for YouTube video')
+    logo_screen(stdscr, get_input)
 
-    args = parser.parse_args()
-
-    if args.query:
-        queries = args.query.split(', ')
-        
-        if get_url(queries, stdscr):
-            play_songs(stdscr, get_input)
-        else:
-            stdscr.addstr(0, 0, "No URLs found for the given query.")
-            stdscr.refresh()
-    else:
-        logo_screen(stdscr, get_input)
-
-def handle_interrupt(signal, frame):
+def handle_interrupt(_, __):
     sys.exit(0)
 
 def get_active_window_id():
