@@ -8,7 +8,7 @@ def play_songs(stdscr, get_input):
     config.loop = True
     config.player_screen = True
     curses.flushinp()
-    config.player_screen_user_input = ''
+    get_input.player_input = ''
 
     footer.init(stdscr, config.play_description)
 
