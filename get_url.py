@@ -1,6 +1,11 @@
 import subprocess
 import config
 
+import logging
+
+logging.basicConfig(filename='debug.log', level=logging.DEBUG, 
+                    format='%(asctime)s - %(levelname)s - %(message)s')
+
 def get_url(queries, stdscr, loading=True):
 
     if loading:
@@ -15,7 +20,8 @@ def get_url(queries, stdscr, loading=True):
         try:
             config.info_list.append((info[0], info[1]))
         except:
-            pass
+            logging.debug(f'Get url: error={result.stdout}')
+            
         if loading: stdscr.addstr(0, 0, f'Loading...    {index + 1}/{len(queries)}')
         stdscr.refresh()
 

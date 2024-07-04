@@ -1,8 +1,9 @@
 import curses
 import os
 import signal
-import subprocess
 import sys
+
+import ewmh
 
 from logo_screen import logo_screen
 import config
@@ -29,12 +30,9 @@ def handle_interrupt(_, __):
     sys.exit(0)
 
 def get_active_window_id():
-    result = subprocess.run(['xdotool', 'getwindowfocus'], capture_output=True, text=True)
-    
-    if result.returncode == 0:
-        config.terminal_id = result.stdout.strip()
-    else:
-        return None
+    ewmh_objekat = ewmh.EWMH()
+    focused_window = ewmh_objekat.getActiveWindow()
+    config.terminal_id = str(focused_window.id)
     
 if __name__ == '__main__':
     get_active_window_id()
