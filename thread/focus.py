@@ -1,5 +1,7 @@
 from pynput.keyboard import Listener
-import ewmh
+
+from utils import get_active_window_id
+
 
 class Focus:
     def __init__(self, config) -> None:
@@ -8,10 +10,9 @@ class Focus:
         self.listener.start()
 
     def on_focus(self, _):
-        ewmh_objekat = ewmh.EWMH()
-        focused_window = ewmh_objekat.getActiveWindow()
+        focused_window_id = get_active_window_id()
 
-        if int(self.config.terminal_id) == int(focused_window.id):
+        if self.config.terminal_id == focused_window_id:
             self.config.focus_thread = True
         else:
             self.config.focus_thread = False

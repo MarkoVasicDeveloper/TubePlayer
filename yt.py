@@ -3,12 +3,11 @@ import os
 import signal
 import sys
 
-import ewmh
-
 from logo_screen import logo_screen
+from user_input import UserInput
+from utils import get_active_window_id
 import config
 
-from user_input import UserInput
 
 def main(stdscr):
     height, width = stdscr.getmaxyx()
@@ -28,11 +27,6 @@ def main(stdscr):
 
 def handle_interrupt(_, __):
     sys.exit(0)
-
-def get_active_window_id():
-    ewmh_objekat = ewmh.EWMH()
-    focused_window = ewmh_objekat.getActiveWindow()
-    config.terminal_id = str(focused_window.id)
     
 if __name__ == '__main__':
     get_active_window_id()
